@@ -18,14 +18,8 @@ namespace HtmlParser
         void SetValue(const std::string& value);
         std::string GetValue() const;
 
-    public:
-        using Iterator = std::vector<Node>::iterator;
-        using ReverseIterator = std::vector<Node>::reverse_iterator;
-        using 
-
     private:
         std::unordered_map<std::string, std::string> attributes_;
-        std::vector<Node> childNodes_;
         std::string tagName_;
         std::string value_;
     };

@@ -18,8 +18,19 @@ namespace HtmlParser
         void SetValue(const std::string& value);
         std::string GetValue() const;
 
+        void AppendChild(const Node& node);
+        Node& GetChildNode(size_t index);
+        void RemoveChild(size_t index);
+
+        bool Empty() const;
+
+    public:
+        bool operator == (const Node& rhs) const;
+        bool operator != (const Node& rhs) const;
+
     private:
         std::unordered_map<std::string, std::string> attributes_;
+        std::vector<Node> childNodes_;
         std::string tagName_;
         std::string value_;
     };

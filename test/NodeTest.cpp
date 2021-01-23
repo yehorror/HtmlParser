@@ -45,3 +45,62 @@ TEST(NodeTest, TestSetAndGetValue)
 
     EXPECT_EQ(VALUE, nodeValue);
 }
+
+TEST(NodeTest, TestNodeEquality)
+{
+    const std::string TEST_VALUE = "Test value";
+    Node firstNode, secondNode;
+
+    firstNode.SetValue(TEST_VALUE);
+    firstNode.SetAttribute(TEST_VALUE, TEST_VALUE);
+    firstNode.SetTagName(TEST_VALUE);
+
+    secondNode.SetValue(TEST_VALUE);
+    secondNode.SetAttribute(TEST_VALUE, TEST_VALUE);
+    secondNode.SetTagName(TEST_VALUE);
+
+    EXPECT_EQ(firstNode, secondNode);
+}
+
+TEST(NodeTest, TestNodeNotEquality)
+{
+    const std::string TEST_VALUE1 = "Test value1";
+    const std::string TEST_VALUE2 = "Test value2";
+    Node firstNode, secondNode;
+
+    firstNode.SetValue(TEST_VALUE1);
+    secondNode.SetValue(TEST_VALUE2);
+
+    EXPECT_NE(firstNode, secondNode);
+}
+
+TEST(NodeTest, TestAppendOfChildNode)
+{
+    const std::string CHILD_NODE_VALUE = "Test";
+
+    Node parentNode;
+
+    Node childNode_;
+    childNode_.SetValue(CHILD_NODE_VALUE);
+
+    parentNode.AppendChild(childNode_);
+
+    Node& childNode = parentNode.GetChildNode(0);
+
+    EXPECT_EQ(childNode, childNode_);
+}
+
+TEST(NodeTest, TestRemoveChildNodeByIndex)
+{
+    const std::string CHILD_NODE_VALUE = "Test";
+
+    Node parentNode;
+
+    Node childNode_;
+    childNode_.SetValue(CHILD_NODE_VALUE);
+
+    parentNode.AppendChild(childNode_);
+    parentNode.RemoveChild(0);
+
+    EXPECT_EQ(parentNode.Empty());
+}

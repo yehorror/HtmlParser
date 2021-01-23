@@ -31,3 +31,31 @@ std::string Node::GetValue() const
 {
     return value_;
 }
+
+bool Node::operator == (const Node& rhs) const
+{
+    return
+        value_ == rhs.value_ &&
+        tagName_ == rhs.tagName_ &&
+        attributes_ == rhs.attributes_;
+}
+
+bool Node::operator != (const Node& rhs) const
+{
+    return !(rhs == *this);
+}
+
+void Node::AppendChild(const Node& node)
+{
+    childNodes_.push_back(node);
+}
+
+Node& Node::GetChildNode(size_t index)
+{
+    return childNodes_.at(index);
+}
+
+void Node::RemoveChild(size_t index)
+{
+    childNodes_.erase(childNodes_.begin() + index);
+}

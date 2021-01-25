@@ -4,5 +4,6 @@ project(HtmlParser)
 
 add_library(HtmlParser
     Node.cpp
-    Node.hpp
+    Parser.cpp
+    ParserImpl.cpp
 )

@@ -102,5 +102,5 @@ TEST(NodeTest, TestRemoveChildNodeByIndex)
     parentNode.AppendChild(childNode_);
     parentNode.RemoveChild(0);
 
-    EXPECT_EQ(parentNode.Empty());
+    EXPECT_TRUE(parentNode.Empty());
 }

@@ -59,3 +59,8 @@ void Node::RemoveChild(size_t index)
 {
     childNodes_.erase(childNodes_.begin() + index);
 }
+
+bool Node::Empty() const
+{
+    return childNodes_.empty();
+}

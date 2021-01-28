@@ -17,6 +17,7 @@ namespace HtmlParser
 
         private:
             std::string ReadTagName();
+            void ReadAttributes(Node& node);
 
         private:
             std::string html_;

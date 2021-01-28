@@ -21,11 +21,3 @@ TEST(ParserImplTest, TestThrowIfContentDoesntBeginWithATag)
     Impl::Parser parser(HTML);
     EXPECT_THROW(parser.Parse(), std::logic_error);
 }
-
-TEST(ParserImlTest, TestThrowIfEndTagIsNotEqualsBeginTag)
-{
-    const std::string HTML = "<head></body>";
-
-    Impl::Parser parser(HTML);
-    EXPECT_THROW(parser.Parse(), std::logic_error);
-}

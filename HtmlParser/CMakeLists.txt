@@ -6,4 +6,6 @@ add_library(HtmlParser
     Node.cpp
     Parser.cpp
     ParserImpl.cpp
+    ParserConstants.cpp
+    TagParser.cpp
 )

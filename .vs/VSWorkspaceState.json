@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\HtmlParser",
+    "\\HtmlParser\\Impl",
+    "\\HtmlParser\\Impl\\TagParsing",
+    "\\test"
+  ],
+  "SelectedNode": "\\HtmlParser\\Impl\\TagParsing\\TagParser.cpp",
+  "PreviewInSolutionExplorer": false
+}

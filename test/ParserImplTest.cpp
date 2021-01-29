@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../HtmlParser/ParserImpl.hpp"
+#include "Impl/ParserImpl.hpp"
 
 using namespace HtmlParser;
 

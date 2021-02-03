@@ -14,6 +14,8 @@ include_directories(
 
 add_executable(HtmlParserTest
     test/NodeTest.cpp
+    test/ParserTest.cpp
+    test/ParserImplTest.cpp
 )
 
 target_link_libraries(HtmlParserTest 

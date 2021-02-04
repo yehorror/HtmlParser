@@ -6,25 +6,39 @@
 
 using namespace HtmlParser;
 
+namespace
+{
+    void CheckIfTagHasNoBegin(const std::string& tag)
+    {
+        if (tag.at(0) != Impl::Constants::TAG_BEGIN)
+        {
+            throw std::logic_error("Expected tag begin");
+        }
+    }
+
+    std::string ParseTagName(const std::string& tag, size_t offset, size_t& nameEndOffset)
+    {
+        size_t nameOffset = tag.find_first_not_of(Impl::Constants::SPACE, offset);
+        nameEndOffset =
+            std::min(
+                tag.find(Impl::Constants::TAG_END, nameOffset),
+                tag.find(Impl::Constants::SPACE, nameOffset)
+            );
+        return tag.substr(nameOffset, nameEndOffset - nameOffset);
+    }
+}
+
 void Impl::ParseTag(const std::string& tag, Node& node)
 {
-    if (tag.at(0) != Impl::Constants::TAG_BEGIN)
-    {
-        throw std::logic_error("Expected tag begin");
-    }
+    CheckIfTagHasNoBegin(tag);
 
     const size_t TAG_NAME_BEGIN_OFFSET = 1;
 
-    size_t nameOffset = tag.find_first_not_of(Impl::Constants::SPACE, TAG_NAME_BEGIN_OFFSET);
-    size_t nameEndOffset =
-        std::min(
-            tag.find(Impl::Constants::TAG_END, nameOffset),
-            tag.find(Impl::Constants::SPACE, nameOffset)
-        );
+    size_t nameEndOffset;
+
+    std::string tagName = ParseTagName(tag, TAG_NAME_BEGIN_OFFSET, nameEndOffset);
     
-    node.SetTagName(
-        tag.substr(nameOffset, nameEndOffset - nameOffset)
-    );
+    node.SetTagName(tagName);
 
     if (tag.at(nameEndOffset) == Impl::Constants::SPACE)
     {
@@ -52,28 +66,23 @@ void Impl::ParseTag(const std::string& tag, Node& node)
 
 std::string Impl::ParseClosingTag(const std::string& tag)
 {
-    if (tag.at(0) != Impl::Constants::TAG_BEGIN)
-    {
-        throw std::logic_error("Expected tag begin");
-    }
+    CheckIfTagHasNoBegin(tag);
 
     size_t tagSlashOffset = tag.find(Impl::Constants::FRONT_SLASH);
+
     if (tagSlashOffset == std::string::npos)
     {
         throw std::logic_error("Closing tag has no slash");
     }
-    size_t tagNameBeginOffset = tag.find_first_not_of(Impl::Constants::SPACE, tagSlashOffset + 1);
 
-    const size_t endNameOffset = 
-        std::min(
-            tag.find(Impl::Constants::TAG_END, tagNameBeginOffset),
-            tag.find(Impl::Constants::SPACE, tagNameBeginOffset)
-        );
+    size_t nameEndOffset;
 
-    if (endNameOffset == std::string::npos)
+    std::string name = ParseTagName(tag, tagSlashOffset + 1, nameEndOffset);
+
+    if (nameEndOffset == std::string::npos)
     {
         throw std::logic_error("Expected closing tag ending");
     }
 
-    return tag.substr(tagNameBeginOffset, endNameOffset - tagNameBeginOffset);
+    return name;
 }

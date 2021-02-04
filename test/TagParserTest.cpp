@@ -105,3 +105,11 @@ TEST(TagParser, TestThrowIfTagHasUnexpectedBeginInClosingTag)
 
     EXPECT_THROW(ParseClosingTag(TAG), std::logic_error);
 }
+
+TEST(TagParser, TestParsingOfAClosingTagWithoutASlash)
+{
+    const std::string TAG = "<head>";
+
+    EXPECT_THROW(ParseClosingTag(TAG), std::logic_error);
+}
+

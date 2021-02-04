@@ -52,5 +52,8 @@ void Impl::ParseTag(const std::string& tag, Node& node)
 
 std::string Impl::ParseClosingTag(const std::string& tag)
 {
-    return "head";
+    const size_t tagNameBeginOffset = 2;
+    const size_t endNameOffset = tag.find(Impl::Constants::TAG_END);
+
+    return tag.substr(tagNameBeginOffset, endNameOffset - tagNameBeginOffset);
 }

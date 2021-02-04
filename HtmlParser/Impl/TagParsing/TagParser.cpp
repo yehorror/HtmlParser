@@ -58,6 +58,10 @@ std::string Impl::ParseClosingTag(const std::string& tag)
     }
 
     size_t tagSlashOffset = tag.find(Impl::Constants::FRONT_SLASH);
+    if (tagSlashOffset == std::string::npos)
+    {
+        throw std::logic_error("Closing tag has no slash");
+    }
     size_t tagNameBeginOffset = tag.find_first_not_of(Impl::Constants::SPACE, tagSlashOffset + 1);
 
     const size_t endNameOffset = 

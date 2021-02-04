@@ -71,3 +71,12 @@ TEST(TagParser, TestClosingTagParsing)
 
     EXPECT_EQ(TAG_NAME, parsedTagName);
 }
+
+TEST(TagParser, TestParsingOfATagWithSpaceBeforeName)
+{
+    const std::string TAG = "</ head>";
+    const std::string TAG_NAME = "head";
+    std::string parsedTagName = ParseClosingTag(TAG);
+
+    EXPECT_EQ(TAG_NAME, parsedTagName);
+}

@@ -55,7 +55,11 @@ std::string Impl::ParseClosingTag(const std::string& tag)
     size_t tagSlashOffset = tag.find(Impl::Constants::FRONT_SLASH);
     size_t tagNameBeginOffset = tag.find_first_not_of(Impl::Constants::SPACE, tagSlashOffset + 1);
 
-    const size_t endNameOffset = tag.find(Impl::Constants::TAG_END);
+    const size_t endNameOffset = 
+        std::min(
+            tag.find(Impl::Constants::TAG_END, tagNameBeginOffset),
+            tag.find(Impl::Constants::SPACE, tagNameBeginOffset)
+        );
 
     return tag.substr(tagNameBeginOffset, endNameOffset - tagNameBeginOffset);
 }

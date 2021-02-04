@@ -49,3 +49,8 @@ void Impl::ParseTag(const std::string& tag, Node& node)
         }
     }
 }
+
+std::string Impl::ParseClosingTag(const std::string& tag)
+{
+    return "head";
+}

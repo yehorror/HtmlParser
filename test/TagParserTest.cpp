@@ -62,3 +62,12 @@ TEST(TagParser, TestTagParsingWithAttributes)
     EXPECT_EQ(tagNode.GetAttribute("attribute1"), "value");
     EXPECT_EQ(tagNode.GetAttribute("attribute2"), "value2");
 }
+
+TEST(TagParsre, TestClosingTagParsing)
+{
+    const std::string TAG = "</head>";
+    const std::string TAG_NAME = "head";
+    std::string parsedTagName = ParseClosingTag(TAG);
+
+    EXPECT_EQ(TAG_NAME, parsedTagName);
+}

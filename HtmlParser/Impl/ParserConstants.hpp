@@ -14,6 +14,7 @@ namespace HtmlParser
             static const char SPACE;
             static const char EQUALS_SIGN;
             static const char QUOTE;
+            static const char FRONT_SLASH;
         };
     }
 }

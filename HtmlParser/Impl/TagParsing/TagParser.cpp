@@ -70,5 +70,10 @@ std::string Impl::ParseClosingTag(const std::string& tag)
             tag.find(Impl::Constants::SPACE, tagNameBeginOffset)
         );
 
+    if (endNameOffset == std::string::npos)
+    {
+        throw std::logic_error("Expected closing tag ending");
+    }
+
     return tag.substr(tagNameBeginOffset, endNameOffset - tagNameBeginOffset);
 }

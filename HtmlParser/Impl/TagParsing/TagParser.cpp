@@ -35,7 +35,8 @@ void Impl::ParseTag(const std::string& tag, Node& node)
         {
             throw std::logic_error("Expected end of a tag");
         }
-        else if (tag.at(notSpaceCharOffset) != Impl::Constants::TAG_END)
+
+        if (tag.at(notSpaceCharOffset) != Impl::Constants::TAG_END)
         {
             size_t tagEndOffset = tag.find(Impl::Constants::TAG_END, notSpaceCharOffset);
             if (tagEndOffset == std::string::npos)
@@ -48,4 +49,3 @@ void Impl::ParseTag(const std::string& tag, Node& node)
         }
     }
 }
-

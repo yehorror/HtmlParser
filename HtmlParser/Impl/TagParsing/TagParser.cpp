@@ -52,6 +52,11 @@ void Impl::ParseTag(const std::string& tag, Node& node)
 
 std::string Impl::ParseClosingTag(const std::string& tag)
 {
+    if (tag.at(0) != Impl::Constants::TAG_BEGIN)
+    {
+        throw std::logic_error("Expected tag begin");
+    }
+
     size_t tagSlashOffset = tag.find(Impl::Constants::FRONT_SLASH);
     size_t tagNameBeginOffset = tag.find_first_not_of(Impl::Constants::SPACE, tagSlashOffset + 1);
 

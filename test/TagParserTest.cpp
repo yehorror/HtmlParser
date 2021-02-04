@@ -99,3 +99,9 @@ TEST(TagParser, TestParsingOfATagSpacesBetweenNameAndEnding)
     EXPECT_EQ(TAG_NAME, parsedTagName);
 }
 
+TEST(TagParser, TestThrowIfTagHasUnexpectedBeginInClosingTag)
+{
+    const std::string TAG = "/head>";
+
+    EXPECT_THROW(ParseClosingTag(TAG), std::logic_error);
+}

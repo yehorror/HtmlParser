@@ -63,6 +63,14 @@ TEST(TagParser, TestTagParsingWithAttributes)
     EXPECT_EQ(tagNode.GetAttribute("attribute2"), "value2");
 }
 
+TEST(TagParser, TestThrowIfTagHasTwoLessThanSigns)
+{
+    const std::string TAG = "<<head>";
+    HtmlParser::Node node;
+
+    EXPECT_THROW(ParseTag(TAG, node), std::logic_error);
+}
+
 TEST(TagParser, TestClosingTagParsing)
 {
     const std::string TAG = "</head>";

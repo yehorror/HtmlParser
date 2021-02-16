@@ -13,11 +13,16 @@ namespace
 {
     const size_t TAG_NAME_BEGIN_OFFSET = 1;
 
-    void CheckIfTagHasNoBegin(const std::string& tag)
+    void CheckTagBeginCorrectness(const std::string& tag)
     {
         if (tag.at(0) != Impl::Constants::TAG_BEGIN)
         {
             throw std::logic_error("Expected tag begin");
+        }
+        size_t firstNotSpaceSymbol = tag.find_first_not_of(Impl::Constants::SPACE, TAG_NAME_BEGIN_OFFSET);
+        if (tag.at(firstNotSpaceSymbol) == Impl::Constants::TAG_BEGIN)
+        {
+            throw std::logic_error("Unexpected second tag begin symbol");
         }
     }
 
@@ -40,7 +45,7 @@ namespace
 
 void Impl::ParseTag(const std::string& tag, Node& node)
 {
-    CheckIfTagHasNoBegin(tag);
+    CheckTagBeginCorrectness(tag);
 
     size_t nameBeginOffset = GetNameOffset(tag, TAG_NAME_BEGIN_OFFSET);
     size_t nameEndOffset = GetNameEndOffset(tag, nameBeginOffset);
@@ -75,7 +80,7 @@ void Impl::ParseTag(const std::string& tag, Node& node)
 
 std::string Impl::ParseClosingTag(const std::string& tag)
 {
-    CheckIfTagHasNoBegin(tag);
+    CheckTagBeginCorrectness(tag);
 
     size_t tagSlashOffset = tag.find(Impl::Constants::FRONT_SLASH);
 

@@ -2,6 +2,7 @@
 #include "Node.hpp"
 #include "ParserConstants.hpp"
 #include "AttributesParser.hpp"
+#include "Utils.hpp"
 
 #include <stdexcept>
 #include <algorithm>
@@ -28,9 +29,11 @@ namespace
     size_t GetNameEndOffset(const std::string& tag, size_t offset)
     {
         return 
-            std::min(
-                tag.find(Impl::Constants::TAG_END, offset),
-                tag.find(Impl::Constants::SPACE, offset)
+            Impl::Utils::FindClosestSymbol(
+                tag,
+                Impl::Constants::SPACE,
+                Impl::Constants::TAG_END,
+                offset
             );
     }
 }
@@ -42,7 +45,7 @@ void Impl::ParseTag(const std::string& tag, Node& node)
     size_t nameBeginOffset = GetNameOffset(tag, TAG_NAME_BEGIN_OFFSET);
     size_t nameEndOffset = GetNameEndOffset(tag, nameBeginOffset);
 
-    std::string tagName = tag.substr(nameBeginOffset, nameEndOffset - nameBeginOffset);
+    std::string tagName = Utils::SubStringFromRange(tag, nameBeginOffset, nameEndOffset);
     
     node.SetTagName(tagName);
 
@@ -64,7 +67,7 @@ void Impl::ParseTag(const std::string& tag, Node& node)
                 throw std::logic_error("Expected end of a tag");
             }
 
-            const std::string attributesStr = tag.substr(notSpaceCharOffset, tagEndOffset - notSpaceCharOffset);
+            const std::string attributesStr = Utils::SubStringFromRange(tag, notSpaceCharOffset, tagEndOffset);
             ParseAttributes(attributesStr, node);
         }
     }
@@ -84,7 +87,7 @@ std::string Impl::ParseClosingTag(const std::string& tag)
     size_t nameBeginOffset = GetNameOffset(tag, tagSlashOffset + 1);
     size_t nameEndOffset = GetNameEndOffset(tag, nameBeginOffset);
 
-    std::string name = tag.substr(nameBeginOffset, nameEndOffset - nameBeginOffset);
+    std::string name = Utils::SubStringFromRange(tag, nameBeginOffset, nameEndOffset);
 
     if (nameEndOffset == std::string::npos)
     {

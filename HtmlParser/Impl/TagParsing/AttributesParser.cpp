@@ -1,6 +1,7 @@
 #include "AttributesParser.hpp"
 #include "ParserConstants.hpp"
 #include "Node.hpp"
+#include "Utils.hpp"
 
 #include <algorithm>
 
@@ -12,16 +13,18 @@ void Impl::ParseAttributes(const std::string& attributesStr, Node& node)
     while (attributeOffset != std::string::npos)
     {
         size_t attributeNameEndPos = 
-            std::min(
-                attributesStr.find(Impl::Constants::EQUALS_SIGN, attributeOffset),
-                attributesStr.find(Impl::Constants::SPACE, attributeOffset)
+            Utils::FindClosestSymbol(
+                attributesStr, 
+                Impl::Constants::EQUALS_SIGN, 
+                Impl::Constants::SPACE,
+                attributeOffset
             );
-        std::string attributeName = attributesStr.substr(attributeOffset, attributeNameEndPos - attributeOffset);
+        std::string attributeName = Utils::SubStringFromRange(attributesStr, attributeOffset, attributeNameEndPos);
 
         size_t valueStartPos = attributesStr.find(Impl::Constants::QUOTE, attributeNameEndPos) + 1;
         size_t valueEndPos = attributesStr.find(Impl::Constants::QUOTE, valueStartPos);
 
-        std::string attributeValue = attributesStr.substr(valueStartPos, valueEndPos - valueStartPos);
+        std::string attributeValue = Utils::SubStringFromRange(attributesStr, valueStartPos, valueEndPos);
 
         node.SetAttribute(attributeName, attributeValue);
 

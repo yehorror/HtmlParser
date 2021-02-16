@@ -10,6 +10,9 @@ add_library(HtmlParser
     Parser.cpp
     Parser.hpp
 
+    Impl/Utils.cpp
+    Impl/Utils.hpp
+
     Impl/ParserImpl.cpp
     Impl/ParserImpl.hpp
 

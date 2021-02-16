@@ -2,6 +2,8 @@
 #include "Node.hpp"
 #include "ParserConstants.hpp"
 #include "AttributesParser.hpp"
+
+#include <stdexcept>
 #include <algorithm>
 
 using namespace HtmlParser;

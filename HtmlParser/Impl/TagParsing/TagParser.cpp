@@ -10,6 +10,8 @@ using namespace HtmlParser;
 
 namespace
 {
+    const size_t TAG_NAME_BEGIN_OFFSET = 1;
+
     void CheckIfTagHasNoBegin(const std::string& tag)
     {
         if (tag.at(0) != Impl::Constants::TAG_BEGIN)
@@ -18,15 +20,18 @@ namespace
         }
     }
 
-    std::string ParseTagName(const std::string& tag, size_t offset, size_t& nameEndOffset)
+    size_t GetNameOffset(const std::string& tag, size_t offset)
     {
-        size_t nameOffset = tag.find_first_not_of(Impl::Constants::SPACE, offset);
-        nameEndOffset =
+        return tag.find_first_not_of(Impl::Constants::SPACE, offset);
+    }
+
+    size_t GetNameEndOffset(const std::string& tag, size_t offset)
+    {
+        return 
             std::min(
-                tag.find(Impl::Constants::TAG_END, nameOffset),
-                tag.find(Impl::Constants::SPACE, nameOffset)
+                tag.find(Impl::Constants::TAG_END, offset),
+                tag.find(Impl::Constants::SPACE, offset)
             );
-        return tag.substr(nameOffset, nameEndOffset - nameOffset);
     }
 }
 
@@ -34,11 +39,10 @@ void Impl::ParseTag(const std::string& tag, Node& node)
 {
     CheckIfTagHasNoBegin(tag);
 
-    const size_t TAG_NAME_BEGIN_OFFSET = 1;
+    size_t nameBeginOffset = GetNameOffset(tag, TAG_NAME_BEGIN_OFFSET);
+    size_t nameEndOffset = GetNameEndOffset(tag, nameBeginOffset);
 
-    size_t nameEndOffset;
-
-    std::string tagName = ParseTagName(tag, TAG_NAME_BEGIN_OFFSET, nameEndOffset);
+    std::string tagName = tag.substr(nameBeginOffset, nameEndOffset - nameBeginOffset);
     
     node.SetTagName(tagName);
 
@@ -77,9 +81,10 @@ std::string Impl::ParseClosingTag(const std::string& tag)
         throw std::logic_error("Closing tag has no slash");
     }
 
-    size_t nameEndOffset;
+    size_t nameBeginOffset = GetNameOffset(tag, tagSlashOffset + 1);
+    size_t nameEndOffset = GetNameEndOffset(tag, nameBeginOffset);
 
-    std::string name = ParseTagName(tag, tagSlashOffset + 1, nameEndOffset);
+    std::string name = tag.substr(nameBeginOffset, nameEndOffset - nameBeginOffset);
 
     if (nameEndOffset == std::string::npos)
     {

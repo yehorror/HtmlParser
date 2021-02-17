@@ -10,13 +10,13 @@ namespace HtmlParser
     {
     public:
         void SetTagName(const std::string& tagName);
-        std::string GetTagName() const;
+        const std::string& GetTagName() const;
 
         void SetAttribute(const std::string& attributeName, const std::string& attributeValue);
-        std::string GetAttribute(const std::string& attributeName) const;
+        const std::string& GetAttribute(const std::string& attributeName) const;
 
         void SetValue(const std::string& value);
-        std::string GetValue() const;
+        const std::string& GetValue() const;
 
         void AppendChild(const Node& node);
         Node& GetChildNode(size_t index);

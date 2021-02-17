@@ -19,7 +19,7 @@ Node Parser::Parse()
 
     if (tagBeginPosition == std::string::npos)
     {
-        throw std::logic_error("Tried to start parsig not from a tag");
+        throw std::logic_error("Tag beginning expected");
     }
 
     position_ = tagBeginPosition + 1;
@@ -27,6 +27,8 @@ Node Parser::Parse()
     std::string tagName = ReadTagName();
     thisNode.SetTagName(tagName);
 
+    size_t nextTagBeginPosition = html_.find("<", position_);
+    
     return thisNode;
 }
 

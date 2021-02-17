@@ -71,6 +71,14 @@ TEST(TagParser, TestThrowIfTagHasTwoLessThanSigns)
     EXPECT_THROW(ParseTag(TAG, node), std::logic_error);
 }
 
+TEST(TagParser, TestThrowIfTagEndsWithNoTagEndSymbol)
+{
+    const std::string TAG = "<head> ";  // tag ends with space
+    HtmlParser::Node node;
+
+    EXPECT_THROW(ParseTag(TAG, node), std::logic_error);
+}
+
 TEST(TagParser, TestClosingTagParsing)
 {
     const std::string TAG = "</head>";

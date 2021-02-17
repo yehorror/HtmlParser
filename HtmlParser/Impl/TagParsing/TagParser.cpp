@@ -26,6 +26,14 @@ namespace
         }
     }
 
+    void CheckTagEndCorrectness(const std::string& tag)
+    {
+        if (tag.back() != Impl::Constants::TAG_END)
+        {
+            throw std::logic_error("Unexpected tag ending");
+        }
+    }
+
     size_t GetNameOffset(const std::string& tag, size_t offset)
     {
         return tag.find_first_not_of(Impl::Constants::SPACE, offset);
@@ -46,6 +54,7 @@ namespace
 void Impl::ParseTag(const std::string& tag, Node& node)
 {
     CheckTagBeginCorrectness(tag);
+    CheckTagEndCorrectness(tag);
 
     size_t nameBeginOffset = GetNameOffset(tag, TAG_NAME_BEGIN_OFFSET);
     size_t nameEndOffset = GetNameEndOffset(tag, nameBeginOffset);
@@ -67,10 +76,6 @@ void Impl::ParseTag(const std::string& tag, Node& node)
         if (tag.at(notSpaceCharOffset) != Impl::Constants::TAG_END)
         {
             size_t tagEndOffset = tag.find(Impl::Constants::TAG_END, notSpaceCharOffset);
-            if (tagEndOffset == std::string::npos)
-            {
-                throw std::logic_error("Expected end of a tag");
-            }
 
             const std::string attributesStr = Utils::SubStringFromRange(tag, notSpaceCharOffset, tagEndOffset);
             ParseAttributes(attributesStr, node);
@@ -81,6 +86,7 @@ void Impl::ParseTag(const std::string& tag, Node& node)
 std::string Impl::ParseClosingTag(const std::string& tag)
 {
     CheckTagBeginCorrectness(tag);
+    CheckTagEndCorrectness(tag);
 
     size_t tagSlashOffset = tag.find(Impl::Constants::FRONT_SLASH);
 
@@ -93,11 +99,6 @@ std::string Impl::ParseClosingTag(const std::string& tag)
     size_t nameEndOffset = GetNameEndOffset(tag, nameBeginOffset);
 
     std::string name = Utils::SubStringFromRange(tag, nameBeginOffset, nameEndOffset);
-
-    if (nameEndOffset == std::string::npos)
-    {
-        throw std::logic_error("Expected closing tag ending");
-    }
 
     return name;
 }

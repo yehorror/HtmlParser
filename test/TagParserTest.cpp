@@ -53,7 +53,7 @@ TEST(TagParser, TestThrowIfTagEndsWithSpace)
 
 TEST(TagParser, TestTagParsingWithAttributes)
 {
-    const std::string TAG = R"(<head attribute1="value" attribute2="value2">")";
+    const std::string TAG = R"(<head attribute1="value" attribute2="value2">)";
 
     HtmlParser::Node tagNode;
     ParseTag(TAG, tagNode);

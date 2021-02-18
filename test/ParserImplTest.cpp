@@ -31,3 +31,11 @@ TEST(ParserImplTest, TestParsingOfTextBetweenTags)
     EXPECT_EQ(titleNode.GetTagName(), "title");
     EXPECT_EQ(titleNode.GetValue(), "Hello");
 }
+
+TEST(ParserImplTest, TestThrowIfHTMLHaveNoClosingTag)
+{
+    const std::string HTML = "<title>Hello";
+
+    Impl::Parser parser(HTML);
+    EXPECT_THROW(parser.Parse(), std::logic_error);
+}

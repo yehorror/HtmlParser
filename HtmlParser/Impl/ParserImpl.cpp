@@ -32,8 +32,18 @@ Node Parser::Parse()
     Utils::CheckForNPos(closingTagBeginPosition, "Closing tag begin expected");
 
     const std::string textBetweenTags = Utils::SubStringFromRange(html_, tagEndPosition, closingTagBeginPosition);
-
     thisNode.SetValue(textBetweenTags);
+
+    const size_t closingTagEndPosition = html_.find(Constants::TAG_END, closingTagBeginPosition) + 1;
+    Utils::CheckForNPos(closingTagEndPosition, "Expected closing tag end");
+
+    const std::string closingTag = Utils::SubStringFromRange(html_, closingTagBeginPosition, closingTagEndPosition);
+    const std::string closingTagName = ParseClosingTag(closingTag);
+
+    if (closingTagName != thisNode.GetTagName())
+    {
+        throw std::logic_error("Unexpected closing tag name");
+    }
 
     return thisNode;
 }

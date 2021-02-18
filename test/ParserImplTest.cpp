@@ -21,3 +21,13 @@ TEST(ParserImplTest, TestThrowIfContentDoesntBeginWithATag)
     Impl::Parser parser(HTML);
     EXPECT_THROW(parser.Parse(), std::logic_error);
 }
+
+TEST(ParserImplTest, TestParsingOfTextBetweenTags)
+{
+    const std::string HTML = "<title>Hello</title>";
+
+    Impl::Parser parser(HTML);
+    Node titleNode = parser.Parse();
+    EXPECT_EQ(titleNode.GetTagName(), "title");
+    EXPECT_EQ(titleNode.GetValue(), "Hello");
+}

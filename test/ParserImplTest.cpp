@@ -47,3 +47,32 @@ TEST(ParserImplTest, TestThrowIfClosingTagDoesntEqualsOpenTag)
     Impl::Parser parser(HTML);
     EXPECT_THROW(parser.Parse(), std::logic_error);
 }
+
+TEST(ParserImplTest, TestThrowIfOpenTagHasNoEnd)
+{
+    const std::string HTML = "<title";
+
+    Impl::Parser parser(HTML);
+    EXPECT_THROW(parser.Parse(), std::logic_error);
+}
+
+TEST(ParserImplTest, TestThrowIfClosingTagHasNoEnd)
+{
+    const std::string HTML = "<title></title";
+
+    Impl::Parser parser(HTML);
+    EXPECT_THROW(parser.Parse(), std::logic_error);
+}
+
+TEST(ParserImplTest, TestParsingOfInnerTags)
+{
+    const std::string HTML = "<head><title>Hello</title></head>";
+
+    Impl::Parser parser(HTML);
+    Node headNode = parser.Parse();
+    EXPECT_EQ(headNode.GetTagName(), "head");
+
+    Node title = headNode.GetChildNode(0);
+    EXPECT_EQ(title.GetTagName(), "title");
+    EXPECT_EQ(title.GetValue(), "Hello");
+}

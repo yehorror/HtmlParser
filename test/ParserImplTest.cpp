@@ -39,3 +39,11 @@ TEST(ParserImplTest, TestThrowIfHTMLHaveNoClosingTag)
     Impl::Parser parser(HTML);
     EXPECT_THROW(parser.Parse(), std::logic_error);
 }
+
+TEST(ParserImplTest, TestThrowIfClosingTagDoesntEqualsOpenTag)
+{
+    const std::string HTML = "<title></body>";
+
+    Impl::Parser parser(HTML);
+    EXPECT_THROW(parser.Parse(), std::logic_error);
+}

@@ -1,4 +1,7 @@
 #include "ParserImpl.hpp"
+#include "ParserConstants.hpp"
+#include "TagParsing/TagParser.hpp"
+#include "Utils.hpp"
 
 #include <stdexcept>
 
@@ -15,27 +18,18 @@ Node Parser::Parse()
 {
     Node thisNode;
 
-    size_t tagBeginPosition = html_.find("<", position_);
+    const size_t tagBeginPosition = html_.find(Constants::TAG_BEGIN, position_);
 
     if (tagBeginPosition == std::string::npos)
     {
         throw std::logic_error("Tag beginning expected");
     }
 
-    position_ = tagBeginPosition + 1;
+    const size_t tagEndPosition = html_.find(Constants::TAG_END, tagBeginPosition) + 1;
 
-    std::string tagName = ReadTagName();
-    thisNode.SetTagName(tagName);
+    const std::string tag = Utils::SubStringFromRange(html_, tagBeginPosition, tagEndPosition);
+
+    ParseTag(tag, thisNode);
 
     return thisNode;
-}
-
-std::string Parser::ReadTagName()
-{
-    size_t tagEndPos = html_.find(">", position_);
-
-    std::string tagName = html_.substr(position_, tagEndPos - position_);
-
-    position_ = tagEndPos;
-    return tagName;
 }

@@ -10,7 +10,7 @@ namespace HtmlParser
         class Parser
         {
         public:
-            Parser(const std::string& html);
+            explicit Parser(const std::string& html);
 
         public:
             Node Parse();

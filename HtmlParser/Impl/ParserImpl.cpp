@@ -23,12 +23,10 @@ Node Parser::Parse()
     }
 
     position_ = tagBeginPosition + 1;
-    
+
     std::string tagName = ReadTagName();
     thisNode.SetTagName(tagName);
 
-    size_t nextTagBeginPosition = html_.find("<", position_);
-    
     return thisNode;
 }
 

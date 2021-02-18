@@ -10,9 +10,5 @@ HtmlParser::Node HtmlParser::Parse(const std::string& html)
         throw std::logic_error("Empty HTML input");
     }
 
-    Impl::Parser parserImpl(html);
-    
-    Node parsedNode = parserImpl.Parse();
-
-    return parsedNode;
+    return Impl::Parser(html).Parse();
 }

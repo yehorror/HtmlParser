@@ -31,5 +31,11 @@ Node Parser::Parse()
 
     ParseTag(tag, thisNode);
 
+    const size_t closingTagBeginPosition = html_.find(Constants::TAG_BEGIN, tagEndPosition);
+
+    const std::string textBetweenTags = Utils::SubStringFromRange(html_, tagEndPosition, closingTagBeginPosition);
+
+    thisNode.SetValue(textBetweenTags);
+
     return thisNode;
 }

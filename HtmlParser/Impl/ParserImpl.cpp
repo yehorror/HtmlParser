@@ -19,19 +19,17 @@ Node Parser::Parse()
     Node thisNode;
 
     const size_t tagBeginPosition = html_.find(Constants::TAG_BEGIN, position_);
-
-    if (tagBeginPosition == std::string::npos)
-    {
-        throw std::logic_error("Tag beginning expected");
-    }
+    Utils::CheckForNPos(tagBeginPosition, "Tag beginning expected");
 
     const size_t tagEndPosition = html_.find(Constants::TAG_END, tagBeginPosition) + 1;
+    Utils::CheckForNPos(tagEndPosition, "Tag ending expected");
 
     const std::string tag = Utils::SubStringFromRange(html_, tagBeginPosition, tagEndPosition);
 
     ParseTag(tag, thisNode);
 
     const size_t closingTagBeginPosition = html_.find(Constants::TAG_BEGIN, tagEndPosition);
+    Utils::CheckForNPos(closingTagBeginPosition, "Closing tag begin expected");
 
     const std::string textBetweenTags = Utils::SubStringFromRange(html_, tagEndPosition, closingTagBeginPosition);
 

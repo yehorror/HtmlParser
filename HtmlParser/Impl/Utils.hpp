@@ -10,6 +10,7 @@ namespace HtmlParser
         {
             size_t FindClosestSymbol(const std::string& string, char firstSymbol, char secondSymbol, size_t offset);
             std::string SubStringFromRange(const std::string& string, size_t begin, size_t end);
+            void CheckForNPos(size_t size, const std::string& errorMessage);
         }
     }
 }

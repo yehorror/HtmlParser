@@ -68,10 +68,7 @@ void Impl::ParseTag(const std::string& tag, Node& node)
         size_t notSpaceCharOffset = 
             tag.find_first_not_of(Impl::Constants::SPACE, nameEndOffset);
 
-        if (notSpaceCharOffset == std::string::npos)
-        {
-            throw std::logic_error("Expected end of a tag");
-        }
+        Utils::CheckForNPos(notSpaceCharOffset, "Expected end of a tag");
 
         if (tag.at(notSpaceCharOffset) != Impl::Constants::TAG_END)
         {
@@ -90,10 +87,7 @@ std::string Impl::ParseClosingTag(const std::string& tag)
 
     size_t tagSlashOffset = tag.find(Impl::Constants::FRONT_SLASH);
 
-    if (tagSlashOffset == std::string::npos)
-    {
-        throw std::logic_error("Closing tag has no slash");
-    }
+    Utils::CheckForNPos(tagSlashOffset, "Closing tag has no slash");
 
     size_t nameBeginOffset = GetNameOffset(tag, tagSlashOffset + 1);
     size_t nameEndOffset = GetNameEndOffset(tag, nameBeginOffset);

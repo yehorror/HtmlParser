@@ -76,3 +76,24 @@ TEST(ParserImplTest, TestParsingOfInnerTags)
     EXPECT_EQ(title.GetTagName(), "title");
     EXPECT_EQ(title.GetValue(), "Hello");
 }
+
+TEST(ParserImplTest, TestParsingOfMultipleInnerTags)
+{    
+    const std::string HTML = 
+        "<head>"
+            "<title>Hello</title>"
+            "<script>alert('hello');</script>"
+        "</head>";
+
+    Impl::Parser parser(HTML);
+    Node headNode = parser.Parse();
+    EXPECT_EQ(headNode.GetTagName(), "head");
+
+    Node title = headNode.GetChildNode(0);
+    EXPECT_EQ(title.GetTagName(), "title");
+    EXPECT_EQ(title.GetValue(), "Hello");
+
+    Node script = headNode.GetChildNode(1);
+    EXPECT_EQ(script.GetTagName(), "script");
+    EXPECT_EQ(script.GetValue(), "alert('Hello')");
+}

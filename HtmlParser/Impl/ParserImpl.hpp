@@ -16,6 +16,11 @@ namespace HtmlParser
             Node Parse();
 
         private:
+            std::string ReadTag();
+            std::string ReadTextUntilTagBegins();
+            void ParseNode(Node& node);
+
+        private:
             std::string html_;
             size_t position_;
         };

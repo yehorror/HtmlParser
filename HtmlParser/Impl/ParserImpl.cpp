@@ -18,42 +18,58 @@ Node Parser::Parse()
 {
     Node thisNode;
 
+    const std::string openTag = ReadTag();
+
+    // parse first tag and then parse the rest of the node (text, child nodes, etc)
+    ParseTag(openTag, thisNode);
+    ParseNode(thisNode);
+
+    return thisNode;
+}
+
+std::string Parser::ReadTag()
+{
     const size_t tagBeginPosition = html_.find(Constants::TAG_BEGIN, position_);
     Utils::CheckForNPos(tagBeginPosition, "Tag beginning expected");
 
-    const size_t tagEndPosition = html_.find(Constants::TAG_END, tagBeginPosition) + 1;
-    Utils::CheckForNPos(tagEndPosition, "Tag ending expected");
+    position_ = html_.find(Constants::TAG_END, tagBeginPosition);
+    Utils::CheckForNPos(position_, "Tag ending expected");
 
-    const std::string tag = Utils::SubStringFromRange(html_, tagBeginPosition, tagEndPosition);
+    ++position_;
+    return Utils::SubStringFromRange(html_, tagBeginPosition, position_);
+}
 
-    ParseTag(tag, thisNode);
+std::string Parser::ReadTextUntilTagBegins()
+{
+    const size_t beginPosition = position_;
 
-    const size_t nextTagBeginPosition = html_.find(Constants::TAG_BEGIN, tagEndPosition);
-    Utils::CheckForNPos(nextTagBeginPosition, "Next tag begin expected");
+    position_ = html_.find(Constants::TAG_BEGIN, position_);
+    Utils::CheckForNPos(position_, "Expected begin of a next tag");
 
-    const size_t nextTagEndPosition = html_.find(Constants::TAG_END, nextTagBeginPosition) + 1;
-    Utils::CheckForNPos(nextTagEndPosition, "Expected closing tag end");
+    return Utils::SubStringFromRange(html_, beginPosition, position_);
+}
 
-    const std::string nextTag = Utils::SubStringFromRange(html_, nextTagBeginPosition, nextTagEndPosition);
+void Parser::ParseNode(Node& node)
+{
+    const std::string text = ReadTextUntilTagBegins();
+    const std::string nextTag = ReadTag();
 
     if (!IsClosingTag(nextTag))
     {
-        position_ = nextTagBeginPosition;
-        Node childNode = Parse();
-        thisNode.AppendChild(childNode);
+        Node childNode;
+        ParseTag(nextTag, childNode);
+        ParseNode(childNode);
+        node.AppendChild(childNode);
     }
     else
     {
-        const std::string textBetweenTags = Utils::SubStringFromRange(html_, tagEndPosition, nextTagBeginPosition);
-        thisNode.SetValue(textBetweenTags);
+        node.SetValue(text);
 
         const std::string closingTagName = ParseClosingTag(nextTag);
 
-        if (closingTagName != thisNode.GetTagName())
+        if (closingTagName != node.GetTagName())
         {
             throw std::logic_error("Unexpected closing tag name");
         }
     }
-
-    return thisNode;
 }

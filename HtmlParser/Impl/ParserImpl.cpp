@@ -34,7 +34,9 @@ Node Parser::Parse()
     const size_t nextTagEndPosition = html_.find(Constants::TAG_END, nextTagBeginPosition) + 1;
     Utils::CheckForNPos(nextTagEndPosition, "Expected closing tag end");
 
-    if (html_.at(nextTagBeginPosition + 1) != Constants::FRONT_SLASH)
+    const std::string nextTag = Utils::SubStringFromRange(html_, nextTagBeginPosition, nextTagEndPosition);
+
+    if (!IsClosingTag(nextTag))
     {
         position_ = nextTagBeginPosition;
         Node childNode = Parse();
@@ -45,8 +47,7 @@ Node Parser::Parse()
         const std::string textBetweenTags = Utils::SubStringFromRange(html_, tagEndPosition, nextTagBeginPosition);
         thisNode.SetValue(textBetweenTags);
 
-        const std::string closingTag = Utils::SubStringFromRange(html_, nextTagBeginPosition, nextTagEndPosition);
-        const std::string closingTagName = ParseClosingTag(closingTag);
+        const std::string closingTagName = ParseClosingTag(nextTag);
 
         if (closingTagName != thisNode.GetTagName())
         {

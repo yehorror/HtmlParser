@@ -97,3 +97,15 @@ TEST(ParserImplTest, TestParsingOfMultipleInnerTags)
     EXPECT_EQ(script.GetTagName(), "script");
     EXPECT_EQ(script.GetValue(), "alert('Hello');");
 }
+
+TEST(ParserImplTest, TetsThrowOnCorruptedTagsInput)
+{    
+    const std::string HTML = 
+        "<head>"
+            "<title>Hello</title>"
+            "<scriptalert('Hello');</script>"
+        "</head>";
+
+    Impl::Parser parser(HTML);
+    EXPECT_THROW(parser.Parse(), std::logic_error);
+}

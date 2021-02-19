@@ -10,5 +10,6 @@ namespace HtmlParser
     {
         void ParseTag(const std::string& tag, Node& node);
         std::string ParseClosingTag(const std::string& tag);
+        bool IsClosingTag(const std::string& tag);
     }
 }

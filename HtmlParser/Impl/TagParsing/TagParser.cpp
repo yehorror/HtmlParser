@@ -96,3 +96,8 @@ std::string Impl::ParseClosingTag(const std::string& tag)
 
     return name;
 }
+
+bool Impl::IsClosingTag(const std::string& tag)
+{
+    return true;
+}

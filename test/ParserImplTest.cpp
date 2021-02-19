@@ -82,7 +82,7 @@ TEST(ParserImplTest, TestParsingOfMultipleInnerTags)
     const std::string HTML = 
         "<head>"
             "<title>Hello</title>"
-            "<script>alert('hello');</script>"
+            "<script>alert('Hello');</script>"
         "</head>";
 
     Impl::Parser parser(HTML);
@@ -95,5 +95,5 @@ TEST(ParserImplTest, TestParsingOfMultipleInnerTags)
 
     Node script = headNode.GetChildNode(1);
     EXPECT_EQ(script.GetTagName(), "script");
-    EXPECT_EQ(script.GetValue(), "alert('Hello')");
+    EXPECT_EQ(script.GetValue(), "alert('Hello');");
 }

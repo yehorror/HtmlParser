@@ -79,6 +79,15 @@ TEST(TagParser, TestThrowIfTagEndsWithNoTagEndSymbol)
     EXPECT_THROW(ParseTag(TAG, node), std::logic_error);
 }
 
+TEST(TagParser, TestParsingOfTagWithSlashInAttributeValue)
+{
+    const std::string TAG = "<script type=\"text/javascript\">";
+    HtmlParser::Node node;
+    ParseTag(TAG, node);
+
+    EXPECT_EQ(node.GetAttribute("type"), "text/javascript");
+}
+
 TEST(TagParser, TestClosingTagParsing)
 {
     const std::string TAG = "</head>";

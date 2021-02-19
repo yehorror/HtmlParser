@@ -51,25 +51,28 @@ std::string Parser::ReadTextUntilTagBegins()
 
 void Parser::ParseNode(Node& node)
 {
-    const std::string text = ReadTextUntilTagBegins();
-    const std::string nextTag = ReadTag();
-
-    if (!IsClosingTag(nextTag))
+    std::string nextTag;
+    std::string text;
+    do
     {
-        Node childNode;
-        ParseTag(nextTag, childNode);
-        ParseNode(childNode);
-        node.AppendChild(childNode);
-    }
-    else
-    {
-        node.SetValue(text);
-
-        const std::string closingTagName = ParseClosingTag(nextTag);
-
-        if (closingTagName != node.GetTagName())
+        text += ReadTextUntilTagBegins();
+        nextTag = ReadTag();
+        if (!IsClosingTag(nextTag))
         {
-            throw std::logic_error("Unexpected closing tag name");
+            Node childNode;
+            ParseTag(nextTag, childNode);
+            ParseNode(childNode);
+
+            node.AppendChild(childNode);
         }
+    }
+    while (!IsClosingTag(nextTag));
+    node.SetValue(text);
+
+    const std::string closingTagName = ParseClosingTag(nextTag);
+
+    if (closingTagName != node.GetTagName())
+    {
+        throw std::logic_error("Unexpected closing tag name");
     }
 }

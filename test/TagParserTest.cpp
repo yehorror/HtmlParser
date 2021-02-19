@@ -156,3 +156,10 @@ TEST(TagParser, TestClosingTagCheckThrowIfItHasNoBegin)
 
     EXPECT_THROW(IsClosingTag(TAG), std::logic_error);
 }
+
+TEST(TagParser, TestClosingTagCheckThrowIfItHasNoEnd)
+{
+    const std::string TAG = "</head";
+
+    EXPECT_THROW(IsClosingTag(TAG), std::logic_error);
+}

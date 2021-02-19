@@ -99,5 +99,5 @@ std::string Impl::ParseClosingTag(const std::string& tag)
 
 bool Impl::IsClosingTag(const std::string& tag)
 {
-    return true;
+    return tag.find(Constants::FRONT_SLASH) != std::string::npos;
 }

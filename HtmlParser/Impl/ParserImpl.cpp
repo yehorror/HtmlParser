@@ -53,11 +53,14 @@ void Parser::ParseNode(Node& node)
 {
     std::string nextTag;
     std::string text;
+    bool nextTagIsClosing;
     do
     {
         text += ReadTextUntilTagBegins();
         nextTag = ReadTag();
-        if (!IsClosingTag(nextTag))
+
+        nextTagIsClosing = IsClosingTag(nextTag);
+        if (!nextTagIsClosing)
         {
             Node childNode;
             ParseTag(nextTag, childNode);
@@ -66,7 +69,8 @@ void Parser::ParseNode(Node& node)
             node.AppendChild(childNode);
         }
     }
-    while (!IsClosingTag(nextTag));
+    while (!nextTagIsClosing);
+
     node.SetValue(text);
 
     const std::string closingTagName = ParseClosingTag(nextTag);

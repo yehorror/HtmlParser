@@ -177,3 +177,10 @@ TEST(TagParser, TestIsNotClosingTagIfThereIsSlashInAttributes)
 
     EXPECT_FALSE(IsClosingTag(TAG));
 }
+
+TEST(TagParser, TestThrowIfTagContainsOnlyBeginAndTrailingSpaces)
+{
+    const std::string TAG = "< ";
+
+    EXPECT_THROW(IsClosingTag(TAG), std::logic_error);
+}

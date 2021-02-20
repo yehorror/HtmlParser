@@ -86,7 +86,6 @@ std::string Impl::ParseClosingTag(const std::string& tag)
     CheckTagEndCorrectness(tag);
 
     const size_t firstNonSpaceCharacter = tag.find_first_not_of(Constants::SPACE, TAG_NAME_BEGIN_OFFSET);
-    Utils::CheckForNPos(firstNonSpaceCharacter, "Closing tag has only trailing spaces");
 
     if (tag.at(firstNonSpaceCharacter) != Constants::FRONT_SLASH)
     {

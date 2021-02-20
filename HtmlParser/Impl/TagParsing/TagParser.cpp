@@ -89,7 +89,7 @@ std::string Impl::ParseClosingTag(const std::string& tag)
 
     if (tag.at(firstNonSpaceCharacter) != Constants::FRONT_SLASH)
     {
-        throw std::logic_error("First character after ag begin is not a slash");
+        throw std::logic_error("First character after tag begin is not a slash");
     }
 
     size_t nameBeginOffset = GetNameOffset(tag, firstNonSpaceCharacter + 1);

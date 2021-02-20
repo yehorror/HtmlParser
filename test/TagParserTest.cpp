@@ -163,3 +163,10 @@ TEST(TagParser, TestClosingTagCheckThrowIfItHasNoEnd)
 
     EXPECT_THROW(IsClosingTag(TAG), std::logic_error);
 }
+
+TEST(TagParser, TestIsNotClosingTagIfThereIsSlashInAttributes)
+{
+    const std::string TAG = "<script type=\"text/javascript\">";
+
+    EXPECT_FALSE(IsClosingTag(TAG));
+}

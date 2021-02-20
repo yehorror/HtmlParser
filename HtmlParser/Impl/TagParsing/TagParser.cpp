@@ -85,11 +85,15 @@ std::string Impl::ParseClosingTag(const std::string& tag)
     CheckTagBeginCorrectness(tag);
     CheckTagEndCorrectness(tag);
 
-    size_t tagSlashOffset = tag.find(Impl::Constants::FRONT_SLASH);
+    const size_t firstNonSpaceCharacter = tag.find_first_not_of(Constants::SPACE, TAG_NAME_BEGIN_OFFSET);
+    Utils::CheckForNPos(firstNonSpaceCharacter, "Closing tag has only trailing spaces");
 
-    Utils::CheckForNPos(tagSlashOffset, "Closing tag has no slash");
+    if (tag.at(firstNonSpaceCharacter) != Constants::FRONT_SLASH)
+    {
+        throw std::logic_error("First character after ag begin is not a slash");
+    }
 
-    size_t nameBeginOffset = GetNameOffset(tag, tagSlashOffset + 1);
+    size_t nameBeginOffset = GetNameOffset(tag, firstNonSpaceCharacter + 1);
     size_t nameEndOffset = GetNameEndOffset(tag, nameBeginOffset);
 
     std::string name = Utils::SubStringFromRange(tag, nameBeginOffset, nameEndOffset);

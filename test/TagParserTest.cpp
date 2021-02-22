@@ -145,6 +145,13 @@ TEST(TagParser, TestThrowIfClosingTagHasNoTagEnd)
     EXPECT_THROW(ParseClosingTag(TAG), std::logic_error);
 }
 
+TEST(TagParser, TestThrowIfTagHasCharactersBetweenTagBeginAndSlash)
+{
+    const std::string TAG = "<whatever/tag>";
+
+    EXPECT_THROW(ParseClosingTag(TAG), std::logic_error);
+}
+
 TEST(TagParser, TestCheckingIfTagIsClosing)
 {
     const std::string TAG = "</head>";
@@ -169,6 +176,20 @@ TEST(TagParser, TestClosingTagCheckThrowIfItHasNoBegin)
 TEST(TagParser, TestClosingTagCheckThrowIfItHasNoEnd)
 {
     const std::string TAG = "</head";
+
+    EXPECT_THROW(IsClosingTag(TAG), std::logic_error);
+}
+
+TEST(TagParser, TestIsNotClosingTagIfThereIsSlashInAttributes)
+{
+    const std::string TAG = "<script type=\"text/javascript\">";
+
+    EXPECT_FALSE(IsClosingTag(TAG));
+}
+
+TEST(TagParser, TestThrowIfTagContainsOnlyBeginAndTrailingSpaces)
+{
+    const std::string TAG = "< ";
 
     EXPECT_THROW(IsClosingTag(TAG), std::logic_error);
 }

@@ -24,6 +24,9 @@ add_library(HtmlParser
 
     Impl/TagParsing/AttributesParser.cpp
     Impl/TagParsing/AttributesParser.hpp
+
+    Impl/HtmlStream/HtmlStream.cpp
+    Impl/HtmlStream/HtmlStream.hpp
 )
 
 target_include_directories(HtmlParser PRIVATE ./ ./Impl ./Impl/TagParsing)

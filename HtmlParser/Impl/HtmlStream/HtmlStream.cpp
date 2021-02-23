@@ -10,10 +10,10 @@ HtmlStream::HtmlStream(const std::string& html)
 
 std::string HtmlStream::ReadTag()
 {
-
+    return "";
 }
 
 std::string HtmlStream::ReadTextUntilTagBegins()
 {
-
+    return "";
 }

@@ -18,6 +18,7 @@ add_executable(HtmlParserTest
     test/ParserImplTest.cpp
     test/TagParserTest.cpp
     test/AttributesParserTest.cpp
+    test/HtmlStreamTest.cpp
 )
 
 target_link_libraries(HtmlParserTest 

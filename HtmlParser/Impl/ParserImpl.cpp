@@ -9,8 +9,7 @@ using HtmlParser::Node;
 using namespace HtmlParser::Impl;
 
 Parser::Parser(const std::string& html)
-    : html_(html)
-    , position_(0)
+    : stream_(html)
 {
 }
 
@@ -18,35 +17,13 @@ Node Parser::Parse()
 {
     Node thisNode;
 
-    const std::string openTag = ReadTag();
+    const std::string openTag = stream_.ReadTag();
 
     // parse first tag and then parse the rest of the node (text, child nodes, etc)
     ParseTag(openTag, thisNode);
     ParseNode(thisNode);
 
     return thisNode;
-}
-
-std::string Parser::ReadTag()
-{
-    const size_t tagBeginPosition = html_.find(Constants::TAG_BEGIN, position_);
-    Utils::CheckForNPos(tagBeginPosition, "Tag beginning expected");
-
-    position_ = html_.find(Constants::TAG_END, tagBeginPosition);
-    Utils::CheckForNPos(position_, "Tag ending expected");
-
-    ++position_;
-    return Utils::SubStringFromRange(html_, tagBeginPosition, position_);
-}
-
-std::string Parser::ReadTextUntilTagBegins()
-{
-    const size_t beginPosition = position_;
-
-    position_ = html_.find(Constants::TAG_BEGIN, position_);
-    Utils::CheckForNPos(position_, "Expected begin of a next tag");
-
-    return Utils::SubStringFromRange(html_, beginPosition, position_);
 }
 
 void Parser::ParseNode(Node& node)
@@ -56,8 +33,8 @@ void Parser::ParseNode(Node& node)
     bool nextTagIsClosing;
     do
     {
-        text += ReadTextUntilTagBegins();
-        nextTag = ReadTag();
+        text += stream_.ReadTextUntilTagBegins();
+        nextTag = stream_.ReadTag();
 
         nextTagIsClosing = IsClosingTag(nextTag);
         if (!nextTagIsClosing)

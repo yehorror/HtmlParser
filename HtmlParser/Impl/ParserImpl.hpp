@@ -10,13 +10,15 @@ namespace HtmlParser
         class Parser
         {
         public:
-            Parser(const std::string& html);
+            explicit Parser(const std::string& html);
 
         public:
             Node Parse();
 
         private:
-            std::string ReadTagName();
+            std::string ReadTag();
+            std::string ReadTextUntilTagBegins();
+            void ParseNode(Node& node);
 
         private:
             std::string html_;

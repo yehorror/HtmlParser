@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.17)
 
 project(HtmlParserTest)
 
@@ -16,6 +16,9 @@ add_executable(HtmlParserTest
     test/NodeTest.cpp
     test/ParserTest.cpp
     test/ParserImplTest.cpp
+    test/TagParserTest.cpp
+    test/AttributesParserTest.cpp
+    test/HtmlStreamTest.cpp
 )
 
 target_link_libraries(HtmlParserTest 

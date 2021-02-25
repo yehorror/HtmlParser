@@ -27,6 +27,11 @@ add_library(HtmlParser
 
     Impl/HtmlStream/HtmlStream.cpp
     Impl/HtmlStream/HtmlStream.hpp
+
+    Impl/ParsingStrategies/AbstractParsingStrategy.hpp
+
+    Impl/ParsingStrategies/DefaultParsingStrategy.cpp
+    Impl/ParsingStrategies/DefaultParsingStrategy.hpp
 )
 
 target_include_directories(HtmlParser PRIVATE ./ ./Impl ./Impl/TagParsing)

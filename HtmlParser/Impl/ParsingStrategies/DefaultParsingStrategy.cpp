@@ -1,34 +1,26 @@
 #include "DefaultParsingStrategy.hpp"
 #include "TagParser.hpp"
 #include "Node.hpp"
+#include "Tag.hpp"
 #include "HtmlStream/HtmlStream.hpp"
 
 #include <stdexcept>
 
 using namespace HtmlParser::Impl;
 
-namespace
-{
-}
-
-DefaultParsingStrategy::DefaultParsingStrategy(Node& node, HtmlStream& stream)
-    : AbstractParsingStrategy(node, stream)
+DefaultParsingStrategy::DefaultParsingStrategy(Node& parentNode, HtmlStream& stream, const Tag& nodeTag)
+    : AbstractParsingStrategy(parentNode, stream, nodeTag)
 {
 }
 
 void DefaultParsingStrategy::ParseNode()
 {
-    const std::string openTag = stream_.ReadTag();
-
-    // parse first tag and then parse the rest of the node (text, child nodes, etc)
-    ParseTag(openTag, node_);
-    InnerParseNode();
-}
-
-void DefaultParsingStrategy::InnerParseNode()
-{
     std::string nextTag;
     std::string text;
+
+    Node thisNode;
+    thisNode.SetTag(nodeTagData_);
+
     bool nextTagIsClosing;
     do
     {
@@ -38,24 +30,25 @@ void DefaultParsingStrategy::InnerParseNode()
         nextTagIsClosing = IsClosingTag(nextTag);
         if (!nextTagIsClosing)
         {
+            Tag nextTagData;
+            ParseTag(nextTag, nextTagData);
+
             Node childNode;
+            childNode.SetTag(nextTagData);
 
-            ParseTag(nextTag, childNode);
-
-            DefaultParsingStrategy childNodeParsingStrategy(childNode, stream_);
-            childNodeParsingStrategy.InnerParseNode();
-
-            node_.AppendChild(childNode);
+            DefaultParsingStrategy childNodeParsingStrategy(thisNode, stream_, nextTagData);
+            childNodeParsingStrategy.ParseNode();
         }
     }
     while (!nextTagIsClosing);
 
-    node_.SetValue(text);
+    thisNode.SetValue(text);
 
     const std::string closingTagName = ParseClosingTag(nextTag);
 
-    if (closingTagName != node_.GetTagName())
+    if (closingTagName != nodeTagData_.GetName())
     {
         throw std::logic_error("Unexpected closing tag name");
     }
+    parentNode_.AppendChild(thisNode);
 }

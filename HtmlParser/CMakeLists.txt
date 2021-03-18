@@ -6,6 +6,9 @@ project(HtmlParser)
 add_library(HtmlParser
     Node.cpp
     Node.hpp
+    
+    Tag.cpp 
+    Tag.hpp
 
     Parser.cpp
     Parser.hpp

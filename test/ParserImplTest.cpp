@@ -9,9 +9,10 @@ TEST(ParserImplTest, TestParsingOfATag)
     const std::string HTML = "<head></head>";
 
     Impl::Parser parser(HTML);
-    Node parsedNode = parser.Parse();
+    Node rootNode = parser.Parse();
+    Node childNode = rootNode.GetChildNode(0);
 
-    EXPECT_EQ("head", parsedNode.GetTagName());
+    EXPECT_EQ("head", childNode.GetTag().GetName());
 }
 
 TEST(ParserImplTest, TestThrowIfContentDoesntBeginWithATag)
@@ -27,8 +28,9 @@ TEST(ParserImplTest, TestParsingOfTextBetweenTags)
     const std::string HTML = "<title>Hello</title>";
 
     Impl::Parser parser(HTML);
-    Node titleNode = parser.Parse();
-    EXPECT_EQ(titleNode.GetTagName(), "title");
+    Node rootNode = parser.Parse();
+    Node titleNode = rootNode.GetChildNode(0);
+    EXPECT_EQ(titleNode.GetTag().GetName(), "title");
     EXPECT_EQ(titleNode.GetValue(), "Hello");
 }
 
@@ -69,11 +71,12 @@ TEST(ParserImplTest, TestParsingOfInnerTags)
     const std::string HTML = "<head><title>Hello</title></head>";
 
     Impl::Parser parser(HTML);
-    Node headNode = parser.Parse();
-    EXPECT_EQ(headNode.GetTagName(), "head");
+    Node rootNode = parser.Parse();
+    Node headNode = rootNode.GetChildNode(0);
+    EXPECT_EQ(headNode.GetTag().GetName(), "head");
 
     Node title = headNode.GetChildNode(0);
-    EXPECT_EQ(title.GetTagName(), "title");
+    EXPECT_EQ(title.GetTag().GetName(), "title");
     EXPECT_EQ(title.GetValue(), "Hello");
 }
 
@@ -86,15 +89,16 @@ TEST(ParserImplTest, TestParsingOfMultipleInnerTags)
         "</head>";
 
     Impl::Parser parser(HTML);
-    Node headNode = parser.Parse();
-    EXPECT_EQ(headNode.GetTagName(), "head");
+    Node rootNode = parser.Parse();
+    Node headNode = rootNode.GetChildNode(0);
+    EXPECT_EQ(headNode.GetTag().GetName(), "head");
 
     Node title = headNode.GetChildNode(0);
-    EXPECT_EQ(title.GetTagName(), "title");
+    EXPECT_EQ(title.GetTag().GetName(), "title");
     EXPECT_EQ(title.GetValue(), "Hello");
 
     Node script = headNode.GetChildNode(1);
-    EXPECT_EQ(script.GetTagName(), "script");
+    EXPECT_EQ(script.GetTag().GetName(), "script");
     EXPECT_EQ(script.GetValue(), "alert('Hello');");
 }
 

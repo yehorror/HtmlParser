@@ -1,13 +1,13 @@
 #include "AttributesParser.hpp"
 #include "ParserConstants.hpp"
-#include "Node.hpp"
+#include "Tag.hpp"
 #include "Utils.hpp"
 
 #include <algorithm>
 
 using namespace HtmlParser;
 
-void Impl::ParseAttributes(const std::string& attributesStr, Node& node)
+void Impl::ParseAttributes(const std::string& attributesStr, Tag& tag)
 {
     size_t attributeOffset = 0;
     while (attributeOffset != std::string::npos)
@@ -26,7 +26,7 @@ void Impl::ParseAttributes(const std::string& attributesStr, Node& node)
 
         std::string attributeValue = Utils::SubStringFromRange(attributesStr, valueStartPos, valueEndPos);
 
-        node.SetAttribute(attributeName, attributeValue);
+        tag.SetAttribute(attributeName, attributeValue);
 
         attributeOffset = attributesStr.find_first_not_of(Impl::Constants::SPACE, valueEndPos + 1);
     }

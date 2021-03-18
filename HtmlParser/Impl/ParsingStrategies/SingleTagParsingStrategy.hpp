@@ -6,10 +6,10 @@ namespace HtmlParser
 {
     namespace Impl
     {
-        class DefaultParsingStrategy : public AbstractParsingStrategy
+        class SingleTagParsingStrategy : public AbstractParsingStrategy
         {
         public:
-            DefaultParsingStrategy(Node& parentNode, HtmlStream& stream, const Tag& nodeTag);
+            SingleTagParsingStrategy(Node& parentNode, HtmlStream& stream, const Tag& nodeTag);
             void ParseNode() override;
         };
     }

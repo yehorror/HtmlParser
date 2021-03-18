@@ -1,5 +1,5 @@
 #include "TagParser.hpp"
-#include "Node.hpp"
+#include "Tag.hpp"
 #include "ParserConstants.hpp"
 #include "AttributesParser.hpp"
 #include "Utils.hpp"
@@ -51,7 +51,7 @@ namespace
     }
 }
 
-void Impl::ParseTag(const std::string& tag, Node& node)
+void Impl::ParseTag(const std::string& tag, Tag& tagData)
 {
     CheckTagBeginCorrectness(tag);
     CheckTagEndCorrectness(tag);
@@ -61,7 +61,7 @@ void Impl::ParseTag(const std::string& tag, Node& node)
 
     std::string tagName = Utils::SubStringFromRange(tag, nameBeginOffset, nameEndOffset);
     
-    node.SetTagName(tagName);
+    tagData.SetName(tagName);
 
     if (tag.at(nameEndOffset) == Impl::Constants::SPACE)
     {
@@ -75,7 +75,7 @@ void Impl::ParseTag(const std::string& tag, Node& node)
             size_t tagEndOffset = tag.find(Impl::Constants::TAG_END, notSpaceCharOffset);
 
             const std::string attributesStr = Utils::SubStringFromRange(tag, notSpaceCharOffset, tagEndOffset);
-            ParseAttributes(attributesStr, node);
+            ParseAttributes(attributesStr, tagData);
         }
     }
 }

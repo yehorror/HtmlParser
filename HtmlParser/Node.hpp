@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Tag.hpp"
+
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -9,11 +11,8 @@ namespace HtmlParser
     class Node
     {
     public:
-        void SetTagName(const std::string& tagName);
-        const std::string& GetTagName() const;
-
-        void SetAttribute(const std::string& attributeName, const std::string& attributeValue);
-        const std::string& GetAttribute(const std::string& attributeName) const;
+        const Tag& GetTag() const;
+        void SetTag(const Tag& tagData);
 
         void SetValue(const std::string& value);
         const std::string& GetValue() const;
@@ -29,9 +28,8 @@ namespace HtmlParser
         bool operator != (const Node& rhs) const;
 
     private:
-        std::unordered_map<std::string, std::string> attributes_;
+        Tag tagData_;
         std::vector<Node> childNodes_;
-        std::string tagName_;
         std::string value_;
     };
 }

@@ -3,6 +3,7 @@
 namespace HtmlParser
 {
     class Node;
+    class Tag;
 
     namespace Impl
     {
@@ -11,9 +12,10 @@ namespace HtmlParser
         class AbstractParsingStrategy
         {
         public:
-            AbstractParsingStrategy(Node& node, HtmlStream& stream)
-                : node_(node)
+            AbstractParsingStrategy(Node& parentNode, HtmlStream& stream, const Tag& nodeTag)
+                : parentNode_(parentNode)
                 , stream_(stream)
+                , nodeTagData_(nodeTag)
             {}
 
             virtual void ParseNode() = 0;
@@ -21,8 +23,9 @@ namespace HtmlParser
             {}
 
         protected:
-            Node& node_;
+            Node& parentNode_;
             HtmlStream& stream_;
+            const Tag& nodeTagData_;
         };
     }
 }

@@ -4,8 +4,6 @@
 #include "Utils.hpp"
 #include "ParsingStrategies/DefaultParsingStrategy.hpp"
 
-#include <stdexcept>
-
 using HtmlParser::Node;
 using namespace HtmlParser::Impl;
 
@@ -16,10 +14,15 @@ Parser::Parser(const std::string& html)
 
 Node Parser::Parse()
 {
-    Node thisNode;
+    Node rootNode;
 
-    DefaultParsingStrategy parsingStrategy(thisNode, stream_);
+    const std::string firstTag = stream_.ReadTag();
+
+    Tag firstTagData;
+    ParseTag(firstTag, firstTagData);
+
+    DefaultParsingStrategy parsingStrategy(rootNode, stream_, firstTagData);
     parsingStrategy.ParseNode();
 
-    return thisNode;
+    return rootNode;
 }

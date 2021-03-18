@@ -4,10 +4,10 @@
 
 namespace HtmlParser
 {
-    class Node;
+    class Tag;
 
     namespace Impl
     {
-        void ParseAttributes(const std::string& attributesStr, Node& node);
+        void ParseAttributes(const std::string& attributesStr, Tag& tag);
     }
 }

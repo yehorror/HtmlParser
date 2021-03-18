@@ -2,24 +2,14 @@
 
 using namespace HtmlParser;
 
-void Node::SetTagName(const std::string& tagName)
+const Tag& Node::GetTag() const
 {
-    tagName_ = tagName;
+    return tagData_;
 }
 
-const std::string& Node::GetTagName() const
+void Node::SetTag(const Tag& tagData)
 {
-    return tagName_;
-}
-
-void Node::SetAttribute(const std::string& attributeName, const std::string& attributeValue)
-{
-    attributes_[attributeName] = attributeValue;
-}
-
-const std::string& Node::GetAttribute(const std::string& attributeName) const
-{
-    return attributes_.at(attributeName);
+    tagData_ = tagData;
 }
 
 void Node::SetValue(const std::string& value)
@@ -36,8 +26,7 @@ bool Node::operator == (const Node& rhs) const
 {
     return
         value_ == rhs.value_ &&
-        tagName_ == rhs.tagName_ &&
-        attributes_ == rhs.attributes_;
+        tagData_ == rhs.tagData_;
 }
 
 bool Node::operator != (const Node& rhs) const

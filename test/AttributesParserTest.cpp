@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "Impl/TagParsing/AttributesParser.hpp"
-#include "Node.hpp"
+#include "Tag.hpp"
 
 using namespace HtmlParser;
 
@@ -8,31 +8,31 @@ TEST(AttributeParser, TestParsingOfAnAttribute)
 {
     const std::string ATTRIBUTE = R"(attribute="value")";
 
-    Node node;
-    Impl::ParseAttributes(ATTRIBUTE, node);
+    Tag tag;
+    Impl::ParseAttributes(ATTRIBUTE, tag);
 
-    EXPECT_EQ(node.GetAttribute("attribute"), "value");
+    EXPECT_EQ(tag.GetAttribute("attribute"), "value");
 }
 
 TEST(AttributeParser, TestParsingOfMultipleAttributes)
 {
     const std::string ATTRIBUTE = R"(attribute1="value1" attribute2="value2")";
 
-    Node node;
-    Impl::ParseAttributes(ATTRIBUTE, node);
+    Tag tag;
+    Impl::ParseAttributes(ATTRIBUTE, tag);
 
-    EXPECT_EQ(node.GetAttribute("attribute1"), "value1");
-    EXPECT_EQ(node.GetAttribute("attribute2"), "value2");
+    EXPECT_EQ(tag.GetAttribute("attribute1"), "value1");
+    EXPECT_EQ(tag.GetAttribute("attribute2"), "value2");
 }
 
 TEST(AttributeParser, TestParsingOfMultipleAttributesWhenSpaceBetweenNameValueAndEqualsSign)
 {
     const std::string ATTRIBUTE = R"(attribute1 = "value1" attribute2 = "value2")";
 
-    Node node;
-    Impl::ParseAttributes(ATTRIBUTE, node);
+    Tag tag;
+    Impl::ParseAttributes(ATTRIBUTE, tag);
 
-    EXPECT_EQ(node.GetAttribute("attribute1"), "value1");
-    EXPECT_EQ(node.GetAttribute("attribute2"), "value2");
+    EXPECT_EQ(tag.GetAttribute("attribute1"), "value1");
+    EXPECT_EQ(tag.GetAttribute("attribute2"), "value2");
 }
 
